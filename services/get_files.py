@@ -1,9 +1,10 @@
 from requests import get
-from xml.etree import ElementTree as ET
+import feedparser
 
-
-def fetch_files(url,params):
-    response = get(url, params=params)
+base_url = "http://export.arxiv.org/api/query?search_query"
+def fetch_files(url, topic):
+    url = f"{url}={topic}&start=0&max_results=10"
+    response = get(url)
     if response.status_code == 200:
         print("Files fetched successfully!")
         return response.text
@@ -12,16 +13,18 @@ def fetch_files(url,params):
 
 
 
-base_url = "https://export.arxiv.org/api/query?"
-params = {"search_query": "all:AI", "start": 0, "max_results": 10 }
-result = fetch_files(base_url, params)
-print(result)
+# input_topic = input("Enter a research topic to search for: ")
+# xml_tree = fetch_files(base_url, input_topic)
+# #print(xml_tree, "xml tree")
 
 
-def parse_xml(result):
-    tree = ET.fromstring(result)
-    print(tree, "tree")
-    return tree
+# #parse the XML response
 
-xml_tree = parse_xml(fetch_files(base_url, params))
-print(xml_tree, "xml tree")
+# feed = feedparser.parse(xml_tree)
+# print(len(feed.entries), "number of entries found")
+# for entry in feed.entries:
+
+#     print(f"Title: {entry.title}")
+#     print(f"Authors: {', '.join(author.name for author in entry.authors)}")
+#     print(f"Published: {entry.published}")
+#     print(f"Summary: {entry.summary}\n")
