@@ -1,10 +1,15 @@
+from time import time
+import streamlit as st
+
 from requests import get
-import feedparser
+#import feedparser
 
 base_url = "http://export.arxiv.org/api/query?search_query"
+@st.cache_data(ttl=3600)
+
 def fetch_files(url, topic):
-    url = f"{url}={topic}&start=0&max_results=10"
-    response = get(url)
+    url = f"{url}={topic}&start=0&max_results=30" 
+    response = get(url, headers={"User-Agent": "ResearchLens/1.0 (contact:bndi.bhavya@gmail.com)"}, timeout=10)
     if response.status_code == 200:
         print("Files fetched successfully!")
         return response.text

@@ -4,6 +4,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 import streamlit as st
 from services.get_files import fetch_files, base_url
+from services.similarity_search import compute_similarity
 import feedparser
 
 def dashboard():
@@ -23,6 +24,7 @@ def dashboard():
             st.write(f"**Published:** {entry.published}")
             st.write(f"**Summary:** {entry.summary}")
             st.write(f"**Link:** [Read more]({entry.link})")
-        
+            similarity_score = compute_similarity(search_topic, entry.title, entry.summary)
+            st.write(f"**Similarity Score:** {similarity_score:.2f}%")
 
 dashboard()
